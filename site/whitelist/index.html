@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>whitelist - Nater API</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "whitelist";
+    var mkdocs_page_input_path = "whitelist.md";
+    var mkdocs_page_url = "/whitelist/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Nater API</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../self/">self</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../auth/">auth</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">whitelist</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#whitelist">Модуль WHITELIST</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#_1">Поддерживает следующие команды:</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../keepttl/">keepttl</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../arp/">arp</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../shaper/">shaper</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../ratelimit/">ratelimit</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dhcp/">dhcp</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dnat/">dnat</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Nater API</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>whitelist</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="whitelist">Модуль WHITELIST</h1>
+<p>Модуль <em>whitelist</em> используется для управления списком IP, доступ на которые возможен без авторизации 
+Позволяет добавлять, удалять IP-адреса
+Выводит список IP-адресов с whitelist</p>
+<h2 id="_1">Поддерживает следующие команды:</h2>
+<ul>
+<li><code>add</code> - добавляет ip в список</li>
+<li><code>remove</code> - убирает ip из списка</li>
+<li><code>flush</code> - очищает список</li>
+<li><code>enable</code> - включает модуль</li>
+<li><code>disable</code> - отключает модуль</li>
+<li><code>check</code> - проверяет на наличие в списке</li>
+<li><code>list</code> - выводит список</li>
+<li><code>status</code> - позволяет получить статус (enabled/disabled)</li>
+<li><code>counters</code> - кол-во IP в списке</li>
+<li><code>test</code> - не реализовано</li>
+<li><code>save</code> - сохраняет список</li>
+</ul>
+<h3 id="add-ip"><code>add</code> - добавить ip</h3>
+<p>Запрос:</p>
+<pre><code>{
+    "module": "whitelist",
+    "action": "add",
+    "data": {
+        "ip": "8.8.8.8"
+    }
+}
+</code></pre>
+<p>Ответ:</p>
+<pre><code>{
+    "code": 0, 
+    "data": {
+        "ip": "8.8.8.8"
+    }, 
+    "errors": null
+}
+</code></pre>
+<h3 id="remove-ip"><code>remove</code> - убрать ip</h3>
+<p>Запрос:</p>
+<pre><code>{
+    "module": "whitelist",
+    "action": "remove",
+    "data": {
+        "ip": "8.8.8.8"
+    }
+}
+</code></pre>
+<p>Ответ:</p>
+<pre><code>{
+    "code": 0, 
+    "data": {
+        "ip": "8.8.8.8"
+    }, 
+    "errors": null
+}
+</code></pre>
+<h3 id="flush-"><code>flush</code> - очистить список</h3>
+<p>Запрос:</p>
+<pre><code>{
+    "module": "whitelist",
+    "action": "flush",
+    "data": null
+}
+</code></pre>
+<p>Ответ:</p>
+<pre><code>{
+    "code": 0, 
+    "data": null,
+    "errors": null
+}
+</code></pre>
+<h3 id="enable-"><code>enable</code> - включить список</h3>
+<p>Запрос:</p>
+<pre><code>{
+    "module": "whitelist",
+    "action": "enable",
+    "data": null
+}
+</code></pre>
+<p>Ответ:</p>
+<pre><code>{
+    "code": 0, 
+    "data": {
+        "status": "enabled"
+    }, 
+    "errors": null
+}
+</code></pre>
+<h3 id="disable-"><code>disable</code> - отключить список</h3>
+<p>Запрос:</p>
+<pre><code>{
+    "module": "whitelist",
+    "action": "disable",
+    "data": null
+}
+</code></pre>
+<p>Ответ:</p>
+<pre><code>{
+    "code": 0, 
+    "data": {
+        "status": "disabled"
+    }, 
+    "errors": null
+}
+</code></pre>
+<h3 id="check-ip"><code>check</code> - проверить наличие IP в списке</h3>
+<p>Запрос:</p>
+<pre><code>{
+    "module": "whitelist",
+    "action": "check",
+    "data": {
+        "ip": "8.8.8.8"
+    }
+}
+</code></pre>
+<p>Ответ:</p>
+<pre><code>{
+    "code": 0, 
+    "data": {
+        "mac": "8.8.8.8"
+    }, 
+    "errors": null
+}
+</code></pre>
+<p>Или:</p>
+<pre><code>{
+    "code": 0, 
+    "data": null,
+    "errors": null
+}
+</code></pre>
+<h3 id="list-"><code>list</code> - вывести список</h3>
+<p>Запрос:</p>
+<pre><code>{
+    "module": "whitelist",
+    "action": "list",
+    "data": null
+}
+</code></pre>
+<p>Ответ:</p>
+<pre><code>{
+    "code": 0, 
+    "data": [
+        {
+            "ip": "8.8.8.8",
+        },
+        {
+            "ip": "8.8.4.4",
+        },
+    ], 
+    "errors": null
+}
+</code></pre>
+<h3 id="status-"><code>status</code> - получить текущий режим работы</h3>
+<p>Запрос:</p>
+<pre><code>{
+    "module": "whitelist",
+    "action": "status",
+    "data": null
+}
+</code></pre>
+<p>Ответ:</p>
+<pre><code>{
+    "code": 0, 
+    "data": {
+        "status": "enabled"
+    }, 
+    "errors": null
+}
+</code></pre>
+<h3 id="counters-ip"><code>counters</code> - кол-во IP адресов в списке</h3>
+<p>Запрос:</p>
+<pre><code>{
+    "module": "whitelist",
+    "action": "counters",
+    "data": null
+}
+</code></pre>
+<p>Ответ:</p>
+<pre><code>{
+    "code": 0, 
+    "data": {
+        "count": 1001
+    }, 
+    "errors": null
+}
+</code></pre>
+<h3 id="test-"><code>test</code> - не реализовано</h3>
+<p>Запрос:</p>
+<pre><code>{
+    "module": "whitelist",
+    "action": "test",
+    "data": null
+}
+</code></pre>
+<p>Ответ:</p>
+<pre><code>{
+    "code": -1, 
+    "data": null, 
+    "errors": [
+        {
+            "message": "Not implement", 
+            "param": "whitelist.test"
+        }
+    ]
+}
+</code></pre>
+<h3 id="save-"><code>save</code> - сохраняет список</h3>
+<p>Запрос:</p>
+<pre><code>{
+    "module": "whitelist",
+    "action": "save",
+    "data": null,
+}
+</code></pre>
+<p>Ответ:</p>
+<pre><code>{
+    "code": -1, 
+    "data": null, 
+    "errors": null
+}
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../keepttl/" class="btn btn-neutral float-right" title="keepttl">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../auth/" class="btn btn-neutral" title="auth"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../auth/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../keepttl/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script src="../js/theme.js"></script>
+
+</body>
+</html>

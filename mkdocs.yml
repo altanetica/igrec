@@ -1,0 +1,13 @@
+site_name: Nater API
+pages:
+  - Home: index.md 
+  - self: app.md
+  - auth: auth.md
+  - whitelist: whitelist.md
+  - keepttl: keepttl.md
+  - arp: arp.md
+  - shaper: shaper.md
+  - ratelimit: ratelimit.md
+  - dhcp: dhcp.md
+  - dnat: dnat.md
+theme: readthedocs

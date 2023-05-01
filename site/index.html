@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="None">
+  
+  <link rel="shortcut icon" href="./img/favicon.ico">
+  <title>Home - Nater API</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="./css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="./css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="./css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Home";
+    var mkdocs_page_input_path = "index.md";
+    var mkdocs_page_url = "/";
+  </script>
+  
+  <script src="./js/jquery-2.1.1.min.js"></script>
+  <script src="./js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="./js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="." class="icon icon-home"> Nater API</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href=".">Home</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#nater-api-documentation">Nater API Documentation</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#_1">Сообщения, не требующие ответа</a></li>
+        
+            <li><a class="toctree-l3" href="#_2">Сообщения, требующие ответ</a></li>
+        
+            <li><a class="toctree-l3" href="#_3">Формат сообщения:</a></li>
+        
+            <li><a class="toctree-l3" href="#_7">Формат ответа:</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="self/">self</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="auth/">auth</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="whitelist/">whitelist</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="keepttl/">keepttl</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="arp/">arp</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="shaper/">shaper</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="ratelimit/">ratelimit</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="dhcp/">dhcp</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="dnat/">dnat</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href=".">Nater API</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Home</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="nater-api-documentation">Nater API Documentation</h1>
+<p>Используется ZeroMQ  </p>
+<h3 id="_1">Сообщения, не требующие ответа</h3>
+<p>Для сообщений без ответа [Push/Pull] запросы (порт <strong>5558</strong>)  </p>
+<h3 id="_2">Сообщения, требующие ответ</h3>
+<p>Для сообщений требующих ответ [Request/Response] запросы (порт <strong>5559</strong>)</p>
+<h2 id="_3">Формат сообщения:</h2>
+<pre><code>{
+    "module": string
+    "action": string
+    "data": null, object, array
+}
+</code></pre>
+<h3 id="_4">Пример сообщения без данных:</h3>
+<pre><code>{
+    "module": "self",
+    "action": "test",
+    "data": null
+}
+</code></pre>
+<h3 id="_5">Пример сообщения с одним экземпляром данных:</h3>
+<pre><code>{
+    "module": "self",
+    "action": "test",
+    "data": {
+        "ping": 10
+    }
+}
+</code></pre>
+<h3 id="_6">Пример с массивом данных:</h3>
+<pre><code>{
+    "module": "self",
+    "action": "test",
+    "data": [
+        {
+            "ping": "hello",
+            "pong": "world"
+        },
+        {
+            "test": "test"
+        }
+    ]
+}
+</code></pre>
+<h2 id="_7">Формат ответа:</h2>
+<pre><code>{
+    "code": number
+    "data": null, object, array 
+    "errors": null, object, array
+}
+</code></pre>
+<p>Для <strong>code</strong> доступны следующие значения:
+- <code>0</code> - выполнено без ошибок 
+- <code>1</code> - выполнено с ошибками
+- <code>-1</code> - не выполнено</p>
+<p>Поле <code>errors</code> содержит <code>null</code> или объект (массив объектов) вида: </p>
+<pre><code>{
+    "param": string
+    "message": string
+}
+</code></pre>
+<h3 id="_8">Пример успешно выполненной команды:</h3>
+<pre><code>{
+    "code": 0, 
+    "data": [
+        {
+            "ip": "10.0.2.2", 
+            "mac": "52:54:00:12:35:02", 
+            "state": 2
+        }, 
+        {
+            "ip": "185.10.80.2", 
+            "mac": "00:11:22:33:44:55", 
+            "state": 128
+        }, 
+        {
+            "ip": "127.0.0.1", 
+            "mac": "00:00:00:00:00:00", 
+            "state": 64
+        }
+    ], 
+    "errors": null
+}
+</code></pre>
+<h3 id="_9">Пример выполнения с ошибками:</h3>
+<pre><code>{
+    "code": 1, 
+    "data": {
+        "mac": "02:03:04:05:06:07"
+    }, 
+    "errors": [
+        {
+            "message": "Invalid Value", 
+            "param": "{'mac': u'02:03:04:05:06:QQ'}"
+        }
+    ]
+}
+</code></pre>
+<h3 id="_10">Пример невыполненной команды:</h3>
+<pre><code>{
+    "code": -1, 
+    "data": null, 
+    "errors": [
+        {
+            "message": "Not in module list", 
+            "param": "authlist"
+        }
+    ]
+}
+</code></pre>
+<p>Доступные модули:</p>
+<ul>
+<li><code>self</code> - Управление самим API</li>
+<li><code>auth</code> - Авторизация</li>
+<li><code>whitelist</code> - Список IP, доступ на которые не требует авторизации</li>
+<li><code>keepttl</code> - Список IP, для которых не нужно менять ttl</li>
+<li><code>arp</code> - Управление arp-записями</li>
+<li><code>shaper</code> - (в разработке) Управление трафик-шейпером (в разработке)</li>
+<li><code>ratelimit</code> - (в разработке) управление ratelimit (автошейпир)</li>
+<li><code>dhcp</code> - (в разработке) управление dhcp</li>
+<li><code>dnat</code> - (в разработке) dnat-mapper для internal static</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="self/" class="btn btn-neutral float-right" title="self">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+        <span style="margin-left: 15px"><a href="self/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script src="./js/theme.js"></script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 0.16.3
+Build Date UTC : 2017-06-27 09:22:14
+-->
