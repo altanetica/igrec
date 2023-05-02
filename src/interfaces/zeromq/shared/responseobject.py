@@ -59,9 +59,9 @@ class ResponseObject(object):
         try:
             jsn = json.dumps(self, cls=ResponseObjectEncoder)
             jsonschema.validate(json.loads(jsn), RESPONSE_SCHEMA)
-        except [TypeError, jsonschema.ValidationError], e:
+        except (TypeError, jsonschema.ValidationError) as e:
             return json.dumps({'code': CODE_FAIL, 'models': None,
-                               'errors': [{'param': 'ResponseObject', 'message': e.message}]})
+                               'errors': [{'param': 'ResponseObject', 'message': str(e)}]})
         return jsn
 
     def get_response(self):

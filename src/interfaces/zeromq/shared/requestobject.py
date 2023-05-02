@@ -34,8 +34,8 @@ class RequestObject(object):
                 data=jsn['models']
             )
             return req
-        except jsonschema.ValidationError, e:
-            raise ValueError(e.message)
+        except jsonschema.ValidationError as e:
+            raise ValueError(str(e))
 
     def to_str(self):
         return "module: " + self.module_ + ", action: " + self.action + ", models: " + self.data.__str__()

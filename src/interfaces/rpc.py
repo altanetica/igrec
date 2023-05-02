@@ -30,6 +30,7 @@ def load_modules():
         loaded_modules[module] = use_cases
     return loaded_modules
 
+
 LOADED_MODULES = load_modules()
 
 

@@ -14,5 +14,5 @@ class ResponseObjectEncoder(json.JSONEncoder):
             }
             to_serialize.update(resp)
             return to_serialize
-        except AttributeError, e:
+        except AttributeError:
             return json.JSONEncoder().default(o)
