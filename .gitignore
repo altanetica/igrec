@@ -1,5 +1,5 @@
-.idea/
-iptc/
-venv/
+/.idea/
+/venv/
+/iptc/
 *.pyc
 install.txt
