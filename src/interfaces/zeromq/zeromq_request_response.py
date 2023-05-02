@@ -20,18 +20,18 @@ def run(cb):
                 req = RequestObject.from_json(msg)
                 reply = cb(req)
                 socket.send(reply.to_json())
-            except ValueError, e:
-                logging.warn("Request value error: " + e.message)
-                reply = {'code': -1, 'models': None, 'errors': [{'param': 'ValidateError', 'message': e.message}]}
+            except ValueError as e:
+                logging.warning("Request value error: " + str(e))
+                reply = {'code': -1, 'models': None, 'errors': [{'param': 'ValidateError', 'message': str(e)}]}
                 socket.send_json(reply)
             except zmq.ZMQError:
                 # normal state for NOBLOCK
                 pass
-            except Exception, e:
+            except Exception as e:
                 logging.exception(e)
-                reply = {'code': -1, 'models': None, 'errors': [{'param': 'Exception', 'message': e.message}]}
+                reply = {'code': -1, 'models': None, 'errors': [{'param': 'Exception', 'message': str(e)}]}
                 socket.send_json(reply)
-    except Exception, e:
+    except Exception as e:
         logging.exception(e)
     finally:
         socket.close()

@@ -18,14 +18,14 @@ def run(cb):
                 msg = str(socket.recv())
                 req = RequestObject.from_json(msg)
                 cb(req)
-            except ValueError, e:
-                logging.warn("Request value error: " + e.message)
+            except ValueError as e:
+                logging.warning("Request value error: " + str(e))
             except zmq.ZMQError:
                 # normal state for NOBLOCK
                 pass
-            except Exception, e:
+            except Exception as e:
                 logging.exception(e)
-    except Exception, e:
+    except Exception as e:
         logging.exception(e)
     finally:
         socket.close()
