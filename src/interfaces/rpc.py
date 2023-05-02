@@ -4,15 +4,33 @@ import importlib
 from src.settings import GlobalConfig
 from zeromq import zeromq_push_pull as pp
 from zeromq import zeromq_request_response as rr
-from rabbitmq.rabbitmqasynchronous import RabbitMQAsynchronous
+
 from src.interfaces.zeromq.shared.requestobject import RequestObject
 from src.interfaces.zeromq.shared.responseobject import ResponseSuccess, ResponseFail
 
 
-MODULES = ('app', 'whitelist', 'auth', 'keepttl', 'arp',
-           'shaper', 'ratelimit', 'dhcp', 'dnat')
+MODULES = ('arp', 'auth', 'self', 'whitelist')
 ACTIONS = ('add', 'remove', 'flush', 'enable', 'disable', 'load',
            'check', 'list', 'status', 'counters', 'test', 'save')
+
+
+def load_modules():
+    loaded_modules = dict()
+    for module in MODULES:
+        pkg = "src.use_cases." + module
+        use_cases = dict()
+        for use_case in ACTIONS:
+            try:
+                m = importlib.import_module(use_case, pkg)
+                use_cases[use_case] = m
+            except ImportError as e:
+                logging.warning(e)
+            except Exception as e:
+                logging.warning("Unexpected error:", e)
+        loaded_modules[module] = use_cases
+    return loaded_modules
+
+LOADED_MODULES = load_modules()
 
 
 # calling use case without answer needed
@@ -21,30 +39,30 @@ def controller(req):
     :param req:
     :type req: RequestObject
     """
+    global LOADED_MODULES
     if not isinstance(req, RequestObject):
-        logging.warn("Request is invalid")
+        logging.warning("Request is invalid")
         return
 
     if req.module_ not in MODULES:
-        logging.warn(req.module_ + " not in module list")
+        logging.warning(req.module_ + " not in module list")
         return
 
     if req.action not in ACTIONS:
-        logging.warn(req.action + " not in action list")
+        logging.warning(req.action + " not in action list")
         return
 
-    use_case = "." + req.action
-    pkg = "src.use_cases." + req.module_
-    try:
-        m = importlib.import_module(use_case, pkg)
-        getattr(m, "execute")(req.data)
-    except (ImportError, AttributeError, TypeError, ValueError), e:
-        logging.warn(e)
-    except NotImplementedError, e:
-        logging.warn(e)
-    # other Exceptions
-    # todo: add excepts
-    pass
+    module = LOADED_MODULES.get(req.module_, None).get(req.action, None)
+    if module is not None:
+        try:
+            module.execute(req.data)
+            #getattr(m, "execute")(req.data)
+        except (AttributeError, TypeError, ValueError) as e:
+            logging.warning(e)
+        except NotImplementedError as e:
+            logging.warning(e)
+        except Exception as e:
+            logging.warning("Unexpected error:", e)
 
 
 # calling use case and return answer
@@ -53,32 +71,32 @@ def informer(req):
     :param req:
     :type req: RequestObject
     """
+    global LOADED_MODULES
     if not isinstance(req, RequestObject):
-        logging.warn("Request is invalid")
+        logging.warning("Request is invalid")
         return ResponseFail(req, "Request is invalid")
 
     if req.module_ not in MODULES:
-        logging.warn(req.module_ + " not in module list")
+        logging.warning(req.module_ + " not in module list")
         return ResponseFail(req.module_, "Not in module list")
 
     if req.action not in ACTIONS:
         return ResponseFail(req.action, "Not in action list")
 
-    use_case = "." + req.action
-    pkg = "src.use_cases." + req.module_
-    try:
-        m = importlib.import_module(use_case, pkg)
-        resp = getattr(m, "execute")(req.data)
-    except (ImportError, AttributeError, TypeError, ValueError), e:
-        logging.warn(e)
-        return ResponseFail(req.module_ + "." + req.action, e)
-    except NotImplementedError, e:
-        logging.warn(e)
-        return ResponseFail(req.module_ + "." + req.action, "Not implement")
-    # other Exceptions
-    # todo: add excepts
-
-    return ResponseSuccess(resp)
+    module = LOADED_MODULES.get(req.module_, None).get(req.action, None)
+    if module is not None:
+        try:
+            resp = module.execute(req.data)
+            return ResponseSuccess(resp)
+            #getattr(m, "execute")(req.data)
+        except (AttributeError, TypeError, ValueError) as e:
+            logging.warning(e)
+        except NotImplementedError as e:
+            logging.warning(e)
+            return ResponseFail(req.module_ + "." + req.action, "Not implement")
+        except Exception as e:
+            logging.warning("Unexpected error:", e)
+    return ResponseFail(req.module_ + "." + req.action, "Fail to execute")
 
 
 # start listeners as threads
@@ -86,20 +104,14 @@ def run():
     threads = []
     config = GlobalConfig()
     if config.get_config('rpc.zeromq.enabled'):
-        thread = threading.Thread(target=pp.run, args=[controller])
-        thread.setDaemon(True)
+        thread = threading.Thread(target=pp.run, args=[controller], daemon=True)
         threads.append(thread)
-        thread = threading.Thread(target=rr.run, args=[informer])
-        thread.setDaemon(True)
+        thread = threading.Thread(target=rr.run, args=[informer], daemon=True)
         threads.append(thread)
-    if config.get_config('rpc.rabbitmq.enabled'):
-        rt = RabbitMQAsynchronous(cb=informer)
-        threads.append(rt)
     try:
         for thread in threads:
-            logging.error('start thread')
             thread.start()
-        logging.warn("RPC threads started")
+        logging.warning("RPC threads started")
         return threads
-    except Exception, e:
+    except Exception as e:
         logging.exception(e)
