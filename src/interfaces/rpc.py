@@ -2,8 +2,8 @@ import logging
 import threading
 import importlib
 from src.settings import GlobalConfig
-from zeromq import zeromq_push_pull as pp
-from zeromq import zeromq_request_response as rr
+from src.interfaces.zeromq import zeromq_push_pull as pp
+from src.interfaces.zeromq import zeromq_request_response as rr
 
 from src.interfaces.zeromq.shared.requestobject import RequestObject
 from src.interfaces.zeromq.shared.responseobject import ResponseSuccess, ResponseFail

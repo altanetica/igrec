@@ -10,10 +10,10 @@ from src.settings import GlobalConfig
 
 
 def main():
-    logging.warn("System start")
+    logging.warning("System start")
     threads = []
     try:
-        config = GlobalConfig('config.yaml')
+        config = GlobalConfig('config.toml')
         startup.load_arp(config.get_config('local.interfaces.internal'), config.get_config('staticarp.filename'))
         threads = rpc.run()
         while True:
@@ -21,7 +21,7 @@ def main():
     except (KeyboardInterrupt, SystemExit):
         for t in threads:
             t.join(5)
-        logging.warn("System exit")
+        logging.warning("System exit")
         sys.exit(0)
 
 

@@ -1,6 +1,6 @@
 import jsonschema
 import json
-from dataobject import DataObject
+from src.interfaces.zeromq.shared.dataobject import DataObject
 
 REQUEST_SCHEMA = {
     'type': 'object',

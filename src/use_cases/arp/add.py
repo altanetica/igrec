@@ -10,7 +10,7 @@ def process_request(ipaddr, mac):
                 lladdr=mac,
                 dst=ipaddr,
                 nud='permanent')
-    except NetlinkError, e:
+    except NetlinkError as e:
         pass
     return {'ip': ipaddr, 'mac': mac}
 
@@ -33,6 +33,6 @@ def execute(data):
             mac = MacAddr(d.mac).to_str().lower()
             r = process_request(ip, mac)
             resp.add_data(r)
-        except (ImportError, AttributeError, TypeError, ValueError), e:
+        except (ImportError, AttributeError, TypeError, ValueError) as e:
             resp.add_error(d.__str__(), e.message)
     return resp

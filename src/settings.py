@@ -7,7 +7,15 @@
 
 import logging
 import toml
-from utils.singleton import Singleton
+
+
+class Singleton(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
 
 
 __DEFAULT_CONFIG__ = "default.toml"
@@ -52,6 +60,9 @@ class GlobalConfig:
                 if cfg is None:
                     break
             return cfg
+
+    def dump(self):
+        return toml.dumps(self.config)
 
 
 def print_default():

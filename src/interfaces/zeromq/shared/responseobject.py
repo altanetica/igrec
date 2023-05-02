@@ -1,6 +1,6 @@
 import jsonschema
 import json
-from dataobject import DataObject
+from src.interfaces.zeromq.shared.dataobject import DataObject
 from src.interfaces.zeromq.serializer.responseobject_serializer import ResponseObjectEncoder
 
 RESPONSE_SCHEMA = {
