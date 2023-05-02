@@ -18,7 +18,7 @@ def process_request():
                 f.writelines(output)
             finally:
                 f.close()
-    except (subprocess.CalledProcessError, OSError, ValueError, IOError), e:
+    except (subprocess.CalledProcessError, OSError, ValueError, IOError):
         pass
     return resp
 

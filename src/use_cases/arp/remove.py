@@ -17,7 +17,7 @@ def process_request(ipaddr=None, mac=None):
                 ipaddr = r[0].get_attr('NDA_DST')
                 mac = r[0].get_attr('NDA_LLADDR')
         ipr.neigh('del', dst=ipaddr, lladdr=mac, ifindex=iface)
-    except NetlinkError, e:
+    except NetlinkError as e:
         pass
     return {'ip': ipaddr, 'mac': mac}
 
@@ -44,6 +44,6 @@ def execute(data):
                 mac = MacAddr(d.mac).to_str().lower()
             r = process_request(ip, mac)
             resp.add_data(r)
-        except (ImportError, AttributeError, TypeError, ValueError), e:
-            resp.add_error(d.__str__(), e.message)
+        except (ImportError, AttributeError, TypeError, ValueError) as e:
+            resp.add_error(d.__str__(), str(e))
     return resp

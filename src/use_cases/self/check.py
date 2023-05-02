@@ -19,6 +19,6 @@ def execute(data):
         try:
             msg = d.ping
             resp.add_data({'pong': process_request(msg)})
-        except (ImportError, AttributeError, TypeError, ValueError), e:
-            resp.add_error(d.__str__(), e.message)
+        except (ImportError, AttributeError, TypeError, ValueError) as e:
+            resp.add_error(d.__str__(), str(e))
     return resp

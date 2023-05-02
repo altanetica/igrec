@@ -15,7 +15,7 @@ def process_request(ipaddr=None, mac=None):
                 r = ipr.neigh('dump', ifindex=iface, lladdr=mac)
         else:
             r = ipr.neigh('dump', ifindex=iface, dst=ipaddr)
-    except NetlinkError, e:
+    except NetlinkError as e:
         pass
     '''
     else:
@@ -56,6 +56,6 @@ def execute(data):
                 mac = MacAddr(d.mac).to_str().lower()
             r = process_request(ip, mac)
             resp.add_data(r)
-        except (ImportError, AttributeError, TypeError, ValueError), e:
-            resp.add_error(d.__str__(), e.message)
+        except (ImportError, AttributeError, TypeError, ValueError) as e:
+            resp.add_error(d.__str__(), str(e))
     return resp

@@ -1,4 +1,4 @@
-from pyroute2.iproute.linux import IPRoute
+from pyroute2.iproute.linux import IPRoute, NetlinkError
 from src.settings import GlobalConfig
 
 ipr = IPRoute()
