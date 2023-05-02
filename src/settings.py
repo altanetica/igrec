@@ -6,8 +6,12 @@
 """
 
 import logging
-import yaml
-from src.utils.singleton import Singleton
+import toml
+from utils.singleton import Singleton
+
+
+__DEFAULT_CONFIG__ = "default.toml"
+__WORKING_CONFIG__ = "config.toml"
 
 
 class GlobalConfig:
@@ -16,10 +20,10 @@ class GlobalConfig:
     """
     __metaclass__ = Singleton
 
-    def __init__(self, fname='config.yaml'):
+    def __init__(self, fname=__WORKING_CONFIG__):
         self.logger = logging.getLogger(__name__)
         self.config = dict()
-        self.config_load('default.config.yaml')
+        self.config_load(__DEFAULT_CONFIG__)
         self.config_load(fname)
         pass
 
@@ -30,8 +34,8 @@ class GlobalConfig:
         try:
             with open(fname, "r") as f:
                 # update dict with new values
-                self.config.update(yaml.load(f))
-        except ImportError:
+                self.config.update(toml.load(f))
+        except toml.TomlDecodeError:
             self.logger.error("Error at load confg file.")
 
     def get_config(self, key=None):
@@ -51,27 +55,22 @@ class GlobalConfig:
 
 
 def print_default():
-    with open("default.config.yaml", 'r') as stream:
+    with open(__DEFAULT_CONFIG__, "r") as f:
         try:
-            print(yaml.load(stream))
-        except yaml.YAMLError as e:
-            print(e)
+            print(toml.dumps(toml.load(f)))
+        except toml.TomlDecodeError:
+            print("Error at load default config file.")
 
 
 def print_config(fname):
-    config = dict()
-    with open("default.config.yaml", 'r') as stream:
-        try:
-            config.update(yaml.load(stream))
-        except yaml.YAMLError as e:
-            print(e)
-    with open(fname, 'r') as stream:
-        try:
-            config.update(yaml.load(stream))
-        except yaml.YAMLError as e:
-            print(e)
-    print(config)
+    try:
+        print(toml.dumps(toml.load([__DEFAULT_CONFIG__, fname])))
+    except toml.TomlDecodeError:
+        print("Error at load config file.")
 
 
 if __name__ == '__main__':
-    print_config('config.yaml')
+    print("Default config:")
+    print_default()
+    print("Working config:")
+    print_config(__WORKING_CONFIG__)
