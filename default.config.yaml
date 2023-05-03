@@ -31,6 +31,8 @@ iptables:
     auth: 'AUTHMARK'
     # цепочка
     drop: 'DROPMARKED'
+    # цепочка управления ttl
+    ttl: 'CHANGETTL'
 
 # настройки протоколов rpc
 rpc:
