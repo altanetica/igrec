@@ -165,15 +165,13 @@ def run():
     threads = []
     config = GlobalConfig()
     if config.get_config('rpc.zeromq.enabled'):
-        print("RPC ZeroMQ enabled")
-        thread = threading.Thread(target=pp.run, args=[controller], daemon=True)
-        threads.append(thread)
-        thread = threading.Thread(target=rr.run, args=[informer], daemon=True)
-        threads.append(thread)
+        logging.warning("RPC ZeroMQ enabled")
+        threads.append({'name': 'ZeroMQ PuspPull', 'thread': threading.Thread(target=pp.run, args=[controller], daemon=True)})
+        threads.append({'name': 'ZeroMQ RequestResponse', 'thread': threading.Thread(target=rr.run, args=[informer], daemon=True)})
     try:
         for thread in threads:
-            thread.start()
-        logging.warning("RPC threads started")
-        return threads
+            thread['thread'].start()
+            logging.warning(f"RPC thread {thread['name']} started")
+        return [t['threads'] for t in threads]
     except Exception as e:
         logging.exception(e)
