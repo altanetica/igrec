@@ -4,3 +4,4 @@
 *.pyc
 install.txt
 config.toml
+config.yaml
