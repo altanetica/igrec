@@ -9,12 +9,13 @@
 
 import argparse
 
-from scripts import system_enable, system_disable, check_zeromq
+from scripts import system_enable, system_disable, check_zeromq, print_config
 
 __SCRIPTS__ = {
     'enable': system_enable.system_enable,
     'disable': system_disable.system_disable,
     'check': check_zeromq.check_zeromq,
+    'config': print_config.print_config,
     'test': lambda: print('test'),
     'status': lambda: print('status'),
     'setup': lambda: print('setup')
