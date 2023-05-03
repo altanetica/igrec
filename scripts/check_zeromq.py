@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import zmq
 import time
 import random

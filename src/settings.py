@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
     Unit Test Lab
@@ -78,10 +77,3 @@ def print_config(fname):
         print(toml.dumps(toml.load([__DEFAULT_CONFIG__, fname])))
     except toml.TomlDecodeError:
         print("Error at load config file.")
-
-
-if __name__ == '__main__':
-    print("Default config:")
-    print_default()
-    print("Working config:")
-    print_config(__WORKING_CONFIG__)
