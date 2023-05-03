@@ -10,12 +10,13 @@ from src.interfaces.zeromq.shared.responseobject import ResponseSuccess, Respons
 
 import src.use_cases.arp as arp
 import src.use_cases.auth as auth
-import src.use_cases.self as self
+import src.use_cases.app as app
 import src.use_cases.whitelist as whitelist
 
 MODULES = ('arp', 'auth', 'self', 'whitelist')
 ACTIONS = ('add', 'remove', 'flush', 'enable', 'disable', 'load',
            'check', 'list', 'status', 'counters', 'test', 'save')
+
 FN = {
     'arp': {
         'add': arp.add.execute,
@@ -45,20 +46,6 @@ FN = {
         'test': auth.test.execute,
         'save': auth.save.execute,
     },
-    'self': {
-        'add': self.add.execute,
-        'remove': self.remove.execute,
-        'flush': self.flush.execute,
-        'enable': self.enable.execute,
-        'disable': self.disable.execute,
-        'load': self.load.execute,
-        'check': self.check.execute,
-        'list': self.list.execute,
-        'status': self.status.execute,
-        'counters': self.counters.execute,
-        'test': self.test.execute,
-        'save': self.save.execute,
-    },
     'whitelist': {
         'add': whitelist.add.execute,
         'remove': whitelist.remove.execute,
@@ -73,7 +60,22 @@ FN = {
         'test': whitelist.test.execute,
         'save': whitelist.save.execute,
     },
+    'app': {
+        'add': app.add.execute,
+        'remove': app.remove.execute,
+        'flush': app.flush.execute,
+        'enable': app.enable.execute,
+        'disable': app.disable.execute,
+        'load': app.load.execute,
+        'check': app.check.execute,
+        'list': app.list.execute,
+        'status': app.status.execute,
+        'counters': app.counters.execute,
+        'test': app.test.execute,
+        'save': app.save.execute,
+    },
 }
+
 
 '''
 def load_modules():
@@ -102,19 +104,24 @@ def controller(req):
     :type req: RequestObject
     """
     global FN
+
     if not isinstance(req, RequestObject):
         logging.warning("Request is invalid")
         return
 
     if req.module_ not in MODULES:
         logging.warning(req.module_ + " not in module list")
-        return
+        return ResponseFail(req.module_, "Not in module list")
+
+    module = FN.get('app', None) if req.module_ == 'self' else FN.get(req.module_, None)
+    if module is None:
+        return ResponseFail(req.module_ + "." + req.action, "Fail to execute")
 
     if req.action not in ACTIONS:
         logging.warning(req.action + " not in action list")
         return
 
-    func = FN.get(req.module_, None).get(req.action, None)
+    func = module.get(req.action, None)
     if func is not None:
         try:
             func(req.data)
@@ -133,6 +140,7 @@ def informer(req):
     :type req: RequestObject
     """
     global FN
+
     if not isinstance(req, RequestObject):
         logging.warning("Request is invalid")
         return ResponseFail(req, "Request is invalid")
@@ -141,10 +149,14 @@ def informer(req):
         logging.warning(req.module_ + " not in module list")
         return ResponseFail(req.module_, "Not in module list")
 
+    module = FN.get('app', None) if req.module_ == 'self' else FN.get(req.module_, None)
+    if module is None:
+        return ResponseFail(req.module_ + "." + req.action, "Fail to execute")
+
     if req.action not in ACTIONS:
         return ResponseFail(req.action, "Not in action list")
 
-    func = FN.get(req.module_, None).get(req.action, None)
+    func = module.get(req.action, None)
     if func is not None:
         try:
             resp = func(req.data)

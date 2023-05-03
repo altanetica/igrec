@@ -35,7 +35,11 @@ class RequestObject(object):
             )
             return req
         except jsonschema.ValidationError as e:
+            print(e)
             raise ValueError(str(e))
 
     def to_str(self):
         return "module: " + self.module_ + ", action: " + self.action + ", models: " + self.data.__str__()
+
+    def __str__(self):
+        return self.to_str()

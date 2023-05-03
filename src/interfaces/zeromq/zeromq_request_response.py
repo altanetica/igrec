@@ -16,10 +16,10 @@ def run(cb):
                 # time.sleep(1)
                 # msg = socket.recv_json(flags=zmq.NOBLOCK)
                 # msg = socket.recv_json()
-                msg = str(socket.recv())
+                msg = str(socket.recv_string())
                 req = RequestObject.from_json(msg)
                 reply = cb(req)
-                socket.send(reply.to_json())
+                socket.send_string(reply.to_json())
             except ValueError as e:
                 logging.warning("Request value error: " + str(e))
                 reply = {'code': -1, 'models': None, 'errors': [{'param': 'ValidateError', 'message': str(e)}]}

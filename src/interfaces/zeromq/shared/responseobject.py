@@ -67,6 +67,9 @@ class ResponseObject(object):
     def get_response(self):
         return self.response
 
+    def __str__(self):
+        return self.to_str()
+
 
 class ResponseSuccess(ResponseObject):
     def __init__(self, response):

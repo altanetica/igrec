@@ -1,4 +1,4 @@
-from src.use_cases.self import enable as uc
+from src.use_cases.app import enable as uc
 
 
 def system_enable():

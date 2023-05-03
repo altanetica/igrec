@@ -15,7 +15,7 @@ def run(cb):
             try:
                 # time.sleep(1)
                 # msg = socket.recv_json(flags=zmq.NOBLOCK)
-                msg = str(socket.recv())
+                msg = str(socket.recv_string())
                 req = RequestObject.from_json(msg)
                 cb(req)
             except ValueError as e:

@@ -78,3 +78,6 @@ class DataObject(object):
             return jsn
         except TypeError:
             return None
+
+    def __str__(self):
+        return 'DataObject: ' + self.data.__str__() + ', ' + self.errors.__str__()

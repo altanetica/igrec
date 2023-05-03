@@ -1,4 +1,4 @@
-from src.use_cases.self import disable as uc
+from src.use_cases.app import disable as uc
 
 
 def system_disable():
