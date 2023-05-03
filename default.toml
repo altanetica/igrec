@@ -17,13 +17,11 @@ ip = "185.10.83.6"
 [ipset]
 whitelist = "whitelist"
 authlist = "authmaclist"
-keepttl = "keepttl"
 
 # список цепочек iptables
 [iptables.chains]
 white = "WHITE"
 auth = "AUTHMARK"
-ttl = "CHANGETTL"
 drop = "DROPMARKED"
 
 # настройки протоколов rpc

@@ -3,3 +3,4 @@
 /iptc/
 *.pyc
 install.txt
+config.toml
