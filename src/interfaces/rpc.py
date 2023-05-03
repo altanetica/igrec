@@ -164,6 +164,7 @@ def informer(req):
 def run():
     threads = []
     config = GlobalConfig()
+    logging.warning('config', config.get_config('rpc.zeromq.enabled'))
     if config.get_config('rpc.zeromq.enabled'):
         logging.warning("RPC ZeroMQ enabled")
         threads.append({'name': 'ZeroMQ PuspPull', 'thread': threading.Thread(target=pp.run, args=[controller], daemon=True)})
