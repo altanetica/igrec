@@ -17,6 +17,7 @@ def run(cb):
                 # msg = socket.recv_json(flags=zmq.NOBLOCK)
                 # msg = socket.recv_json()
                 msg = str(socket.recv())
+                logging.info("Received request: " + msg)
                 req = RequestObject.from_json(msg)
                 reply = cb(req)
                 socket.send(reply.to_json())

@@ -165,6 +165,7 @@ def run():
     threads = []
     config = GlobalConfig()
     if config.get_config('rpc.zeromq.enabled'):
+        print("RPC ZeroMQ enabled")
         thread = threading.Thread(target=pp.run, args=[controller], daemon=True)
         threads.append(thread)
         thread = threading.Thread(target=rr.run, args=[informer], daemon=True)
