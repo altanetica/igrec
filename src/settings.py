@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
     Unit Test Lab
@@ -5,32 +6,29 @@
 """
 
 import logging
-import toml
+import yaml
+
+__DEFAULT_CONFIG__ = "default.config.yaml"
+__WORK_CONFIG__ = "config.yaml"
 
 
-class Singleton(type):
+class SingletonMeta(type):
+
     _instances = {}
 
     def __call__(cls, *args, **kwargs):
         if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+            instance = super().__call__(*args, **kwargs)
+            cls._instances[cls] = instance
         return cls._instances[cls]
 
 
-__DEFAULT_CONFIG__ = "default.toml"
-__WORKING_CONFIG__ = "config.toml"
+class GlobalConfig(metaclass=SingletonMeta):
 
-
-class GlobalConfig:
-    """
-    Singleton with global configuration
-    """
-    __metaclass__ = Singleton
-
-    def __init__(self, fname=__WORKING_CONFIG__):
+    def __init__(self, fname='config.yaml'):
         self.logger = logging.getLogger(__name__)
         self.config = dict()
-        self.config_load(__DEFAULT_CONFIG__)
+        self.config_load('default.config.yaml')
         self.config_load(fname)
         pass
 
@@ -41,8 +39,8 @@ class GlobalConfig:
         try:
             with open(fname, "r") as f:
                 # update dict with new values
-                self.config.update(toml.load(f))
-        except toml.TomlDecodeError:
+                self.config.update(yaml.safe_load(f))
+        except ImportError:
             self.logger.error("Error at load confg file.")
 
     def get_config(self, key=None):
@@ -61,19 +59,27 @@ class GlobalConfig:
             return cfg
 
     def dump(self):
-        return toml.dumps(self.config)
+        print(self.config)
 
+    @staticmethod
+    def print_default():
+        with open("default.config.yaml", 'r') as stream:
+            try:
+                print(yaml.safe_load(stream))
+            except yaml.YAMLError as e:
+                print(e)
 
-def print_default():
-    with open(__DEFAULT_CONFIG__, "r") as f:
-        try:
-            print(toml.dumps(toml.load(f)))
-        except toml.TomlDecodeError:
-            print("Error at load default config file.")
-
-
-def print_config(fname):
-    try:
-        print(toml.dumps(toml.load([__DEFAULT_CONFIG__, fname])))
-    except toml.TomlDecodeError:
-        print("Error at load config file.")
+    @staticmethod
+    def print_config(fname):
+        config = dict()
+        with open("default.config.yaml", 'r') as stream:
+            try:
+                config.update(yaml.safe_load(stream))
+            except yaml.YAMLError as e:
+                print(e)
+        with open(fname, 'r') as stream:
+            try:
+                config.update(yaml.safe_load(stream))
+            except yaml.YAMLError as e:
+                print(e)
+        print(config)
