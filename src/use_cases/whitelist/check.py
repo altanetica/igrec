@@ -26,6 +26,6 @@ def execute(data):
             ipaddr = IpAddr(d.ip).to_str()
             r = process_request(ipaddr)
             resp.add_data(r)
-        except (ImportError, AttributeError, TypeError, ValueError), e:
-            resp.add_error(d.__str__(), e.message)
+        except (ImportError, AttributeError, TypeError, ValueError) as e:
+            resp.add_error(d.__str__(), str(e))
     return resp

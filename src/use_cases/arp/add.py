@@ -34,5 +34,5 @@ def execute(data):
             r = process_request(ip, mac)
             resp.add_data(r)
         except (ImportError, AttributeError, TypeError, ValueError) as e:
-            resp.add_error(d.__str__(), e.message)
+            resp.add_error(d.__str__(), str(e))
     return resp
