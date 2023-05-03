@@ -32,6 +32,6 @@ def main(fn: str):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='IGREC Service')
-    parser.add_argument('action', choices=['enable', 'disable', 'check', 'test', 'status', 'setup'])
+    parser.add_argument('action', choices=['enable', 'disable', 'check', 'test', 'status', 'setup', 'config'])
     args = parser.parse_args()
     main(args.action)
